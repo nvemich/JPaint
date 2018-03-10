@@ -3,8 +3,10 @@ package model;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 
-public class ShapeList extends ArrayList<ShapeType>{
-    public void push(ShapeType t){
+public class ShapeList extends ArrayList<Shape>{
+    private ArrayList<Shape> shapes;
+
+    public void push(Shape t){
         if ( t == null) throw new IllegalArgumentException();
         this.add(t);
     }

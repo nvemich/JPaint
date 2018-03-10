@@ -7,8 +7,11 @@ import java.util.NoSuchElementException;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import model.ShapeList;
+import model.persistence.ApplicationState;
 import view.interfaces.IGuiWindow;
 import view.EventName;
+import view.mouseHandler;
 
 import java.awt.*;
 
@@ -20,6 +23,8 @@ public class GuiWindow extends JFrame implements IGuiWindow {
     	= new Insets(5, 8, 5, 8);
     private final Map<EventName, JButton> eventButtons = new HashMap<>();
     private final PaintCanvas canvas;
+//    private final mouseHandler mouse;
+
 
     public GuiWindow(PaintCanvas canvas){
         setVisible(true);
@@ -30,6 +35,8 @@ public class GuiWindow extends JFrame implements IGuiWindow {
         this.canvas = canvas;
         window.add(canvas, BorderLayout.CENTER);
 		validate();
+//		mouse = new mouseHandler(canvas,list);
+//		addMouseListener(mouse);
     }
 
     @Override

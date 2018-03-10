@@ -1,17 +1,43 @@
 package view;
 
-import model.ProcessPaint;
 
+import controller.*;
+import model.DrawShape;
+import model.ProcessPaint;
+import model.Shape;
+import model.ShapeList;
+import model.persistence.ApplicationState;
+import view.gui.PaintCanvas;
+
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
+
 
 //mouse handler to handle all my mouse events, like press and release
 public class mouseHandler extends MouseAdapter implements MouseListener {
 
     int start_x, start_y, end_x, end_y;
-    ProcessPaint process;
+    PaintCanvas paint;
+    DrawShape shape;
+    ApplicationState state;
+    ProcessPaint start;
+    ShapeList shapeList;
+    ColorAdapater primary,secondary;
+    ColorList colorList;
+    IMODE mode;
+    Shape shapeObj;
+
+
+
+
+    public mouseHandler(PaintCanvas paint, ShapeList list){
+        this.paint = paint;
+        this.shapeList = list;
+    }
+
+
 
 
     @Override
@@ -27,14 +53,28 @@ public class mouseHandler extends MouseAdapter implements MouseListener {
         this.end_y = e.getY();
         System.out.println(end_x + "," + end_y);
 
-        process = new ProcessPaint(start_x,start_y,end_x,end_y);
-
-        try {
-            process.run();
-        } catch (IOException e1) {
-            e1.printStackTrace();
+        switch(state.getActiveStartAndEndPointMode().toString()){
+            case "DRAW":
+                mode = new DrawMode(paint,shapeList,colorList,state,start_x,start_y,end_x,end_y);
+                shapeObj = new Shape(state.getActiveShapeType(), start_x, start_y, end_x, end_y);
+                shapeList.push(shapeObj);
+                break;
+            case "SELECT":
+                mode = new SelectMode(paint,shapeList,start_x,start_y,end_x,end_y);
+                break;
+            case "MOVE":
+                break;
         }
+        mode.run();
+
     }
+
+
+    public void setStates(ApplicationState state, ColorList list){
+        this.colorList = list;
+        this.state = state;
+    }
+
 
 
 

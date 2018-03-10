@@ -52,7 +52,9 @@ public class ApplicationState implements IApplicationState {
 
     @Override
     public ShapeType getActiveShapeType() {
+        System.out.println(activeShapeType);
         return activeShapeType;
+
     }
 
     @Override
