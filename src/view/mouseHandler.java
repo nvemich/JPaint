@@ -6,6 +6,7 @@ import model.*;
 import model.Shape;
 import model.interfaces.IShape;
 import model.persistence.ApplicationState;
+
 import view.gui.PaintCanvas;
 
 import java.awt.*;
@@ -46,36 +47,42 @@ public class mouseHandler extends MouseAdapter implements MouseListener {
     public void mousePressed(MouseEvent e) {
         this.start_x = e.getX();
         this.start_y = e.getY();
+        System.out.println(start_x+","+start_y);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         this.end_x = e.getX();
         this.end_y = e.getY();
+        System.out.println(end_x+","+end_y);
 
 
         if (state.getActiveStartAndEndPointMode().toString().equalsIgnoreCase("Select")) {
             for (Shape shape : shapeList) {
-
+                if(start_x==end_x){
                 if ((shape.getStartX() <= end_x) && (shape.getEndX() >= end_x) && (shape.getStartY() <= end_y) && (shape.getEndY() >= end_y)) {
                     {
                         System.out.println("Selected Shape: " + shape.getShape().toString());
                         selected.push(shape);
                     }
                 }
+                }else if((shape.getStartX() > start_x) && (shape.getStartY() > getStart_y()) // Checks the top left corner of the shape and the rectangle
+                            && ((shape.getEndX() < e.getX()) && ((shape.getEndY() < e.getY())))){
+                    System.out.println("Selected Shape: " + shape.getShape().toString());
+                    selected.push(shape);
+                }
             }
+        }else {
+            switch (state.getActiveStartAndEndPointMode().toString()) {
+                case "DRAW":
+                    mode = new DrawMode(paint, shapeList, colorList, state, start_x, start_y, end_x, end_y);
+                    break;
+                case "MOVE":
+                    mode = new MoveCommand(selected, shapeList, paint, start_x,start_y,end_x,end_y);
+                    break;
+            }
+            mode.run();
         }
-
-        switch (state.getActiveStartAndEndPointMode().toString()) {
-            case "DRAW":
-                mode = new DrawMode(paint, shapeList, colorList, state, start_x, start_y, end_x, end_y);
-                break;
-            case "MOVE":
-                mode = 
-                break;
-        }
-        mode.run();
-
 
     }
 
