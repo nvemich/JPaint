@@ -10,6 +10,7 @@ public class SelectMode implements IMODE {
     ShapeList shapeList;
     int start_x,start_y, end_x, end_y;
     PaintCanvas canvas;
+    IShape selected;
 
     public SelectMode(PaintCanvas canvas,ShapeList shapeList, int start_x, int start_y, int end_x, int end_y){
         this.shapeList = shapeList;
@@ -24,20 +25,17 @@ public class SelectMode implements IMODE {
     public void run() {
         for (IShape shape : shapeList) {
 
-
-
             if ((shape.getStartX() <= end_x)&& (shape.getEndX() >= end_x) && (shape.getStartY() <= end_y) && (shape.getEndY() >= end_y)) {
                 {
-                    System.out.println("Shape: " + shape.toString());
+                    System.out.println("Shape: " + shape.getShape().toString());
                     System.out.println("Coords: (" + shape.getStartX() + "," + shape.getStartY() + ")(" + shape.getEndX() + "," + shape.getEndY() + ")");
-                    System.out.println();
-                    System.out.println("Selection Coords: (" + start_x + "," + start_y + ")(" + end_x + "," + end_y + ")");
-
-                    //               Selection.Add((IDraggableShape) snapshot);
+                    selected = shape;
                 }
             }
+
+
 //        remove(rectangle);
-            canvas.repaint();
+            //canvas.repaint();
         }
     }
 }

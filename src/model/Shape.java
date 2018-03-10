@@ -12,12 +12,12 @@ public class Shape implements IShape{
 
 
     public Shape(ShapeType shape, int start_x, int start_y, int end_x,
-        int end_y)
+        int end_y, Color primary, Color seconday, ShapeShadingType shading)
     {
         this.shape =shape;
-//        this.primary = primary;
-//        this.seconday = seconday;
-//        this.shading = shading;
+        this.primary = primary;
+        this.seconday = seconday;
+        this.shading = shading;
         this.start_x = start_x;
         this.start_y = start_y;
         this.end_x = end_x;
@@ -30,20 +30,20 @@ public class Shape implements IShape{
         return  shape;
     }
 
-//    @Override
-//    public Color getPColor() {
-//        return primary;
-//    }
-//
-//    @Override
-//    public Color getSColor() {
-//        return seconday;
-//    }
-//
-//    @Override
-//    public ShapeShadingType getShade() {
-//        return shading;
-//    }
+    @Override
+    public Color getPColor() {
+        return primary;
+    }
+
+    @Override
+    public Color getSColor() {
+        return seconday;
+    }
+
+    @Override
+    public ShapeShadingType getShade() {
+        return shading;
+    }
 
     @Override
     public int getStartX() {
@@ -70,6 +70,6 @@ public class Shape implements IShape{
     }
 
     public int getHeight(){
-        return end_y-end_x;
+        return end_y-start_y;
     }
 }

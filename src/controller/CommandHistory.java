@@ -3,6 +3,7 @@ package controller;
 import java.util.Stack;
 
 public class CommandHistory {
+
     private static final Stack<IUndoable> undoStack = new Stack<IUndoable>();
     private static final Stack<IUndoable> redoStack = new Stack<IUndoable>();
 
@@ -30,5 +31,14 @@ public class CommandHistory {
         }
         return result;
     }
+
+    public int getSize(){
+       return undoStack.size();
+    }
+
+    public IUndoable getCmd(){
+        return undoStack.get(0);
+    }
+
 
 }

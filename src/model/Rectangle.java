@@ -3,6 +3,8 @@ package model;
 import model.interfaces.IShape;
 import view.gui.PaintCanvas;
 
+import java.awt.*;
+
 public class Rectangle implements IShape{
     int start_x, start_y, end_x, end_y;
     public Rectangle(int start_x, int start_y, int end_x, int end_y) {
@@ -16,6 +18,21 @@ public class Rectangle implements IShape{
     @Override
     public ShapeType getShape() {
         return ShapeType.RECTANGLE;
+    }
+
+    @Override
+    public Color getPColor() {
+        return null;
+    }
+
+    @Override
+    public Color getSColor() {
+        return null;
+    }
+
+    @Override
+    public ShapeShadingType getShade() {
+        return null;
     }
 
     @Override

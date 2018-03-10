@@ -1,5 +1,6 @@
 package model.interfaces;
 
+import controller.ICommand;
 import model.ShapeColor;
 import model.ShapeShadingType;
 import model.ShapeType;
@@ -25,4 +26,6 @@ public interface IApplicationState {
     ShapeShadingType getActiveShapeShadingType();
 
     StartAndEndPointMode getActiveStartAndEndPointMode();
+
+
 }

@@ -7,9 +7,9 @@ import java.awt.*;
 
 public interface IShape {
     ShapeType getShape();
-//    Color getPColor();
-//    Color getSColor();
-//    ShapeShadingType getShade();
+    Color getPColor();
+    Color getSColor();
+    ShapeShadingType getShade();
     int getStartX();
     int getStartY();
     int getWidth();

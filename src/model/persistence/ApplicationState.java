@@ -1,5 +1,6 @@
 package model.persistence;
 
+import controller.ICommand;
 import model.ShapeColor;
 import model.ShapeShadingType;
 import model.ShapeType;
@@ -18,6 +19,7 @@ public class ApplicationState implements IApplicationState {
     private ShapeColor activeSecondaryColor;
     private ShapeShadingType activeShapeShadingType;
     private StartAndEndPointMode activeStartAndEndPointMode;
+
 
     public ApplicationState(IUiModule uiModule) {
         this.uiModule = uiModule;
@@ -50,9 +52,9 @@ public class ApplicationState implements IApplicationState {
         activeStartAndEndPointMode = uiModule.getDialogResponse(dialogProvider.getChooseStartAndEndPointModeDialog());
     }
 
+
     @Override
     public ShapeType getActiveShapeType() {
-        System.out.println(activeShapeType);
         return activeShapeType;
 
     }
@@ -76,6 +78,9 @@ public class ApplicationState implements IApplicationState {
     public StartAndEndPointMode getActiveStartAndEndPointMode() {
         return activeStartAndEndPointMode;
     }
+
+
+
 
     private void setDefaults() {
         activeShapeType = ShapeType.ELLIPSE;
