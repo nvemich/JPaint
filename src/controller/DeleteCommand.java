@@ -27,9 +27,6 @@ public class DeleteCommand implements ICommand, IUndoable {
 
     @Override
     public void run() {
-        System.out.println(selectedShapes.toString());
-        System.out.println(shapeList.toString());
-
 
         if (!selectedShapes.isEmpty()) {
             for (Shape selected : selectedShapes) {
@@ -43,7 +40,6 @@ public class DeleteCommand implements ICommand, IUndoable {
                     }
                 }
             }
-        shapeList.remove(shapeList.size()-1);
         selectedShapes.clear();
         graphics.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         reDrawShapes();

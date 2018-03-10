@@ -65,7 +65,8 @@ public class mouseHandler extends MouseAdapter implements MouseListener {
                         System.out.println("Selected Shape: " + shape.getShape().toString());
                         selected.push(shape);
                     }
-                }
+                }else
+                    selected.clear();
                 }else if((shape.getStartX() > start_x) && (shape.getStartY() > getStart_y()) // Checks the top left corner of the shape and the rectangle
                             && ((shape.getEndX() < e.getX()) && ((shape.getEndY() < e.getY())))){
                     System.out.println("Selected Shape: " + shape.getShape().toString());
