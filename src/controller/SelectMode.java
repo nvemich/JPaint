@@ -21,21 +21,23 @@ public class SelectMode implements IMODE {
     }
 
     @Override
-    public void run(){
-        for (IShape shape: shapeList)
-        {
-
-            System.out.println(shape.getShape());
+    public void run() {
+        for (IShape shape : shapeList) {
 
 
-           if ((shape.getStartX() > start_x) && (shape.getStartY() > start_y) // Checks the top left corner of the shape and the rectangle
-                    && ((shape.getStartX() + shape.getWidth()) < e.getX()) && ((shape.getY() + shape.getHeight()) < e.getY())) // Checks the bottom right corner of the shape and the rectangle
-//            {
-//                Selection.Add((IDraggableShape) snapshot);
-//            }
-        }
+
+            if ((shape.getStartX() <= end_x)&& (shape.getEndX() >= end_x) && (shape.getStartY() <= end_y) && (shape.getEndY() >= end_y)) {
+                {
+                    System.out.println("Shape: " + shape.toString());
+                    System.out.println("Coords: (" + shape.getStartX() + "," + shape.getStartY() + ")(" + shape.getEndX() + "," + shape.getEndY() + ")");
+                    System.out.println();
+                    System.out.println("Selection Coords: (" + start_x + "," + start_y + ")(" + end_x + "," + end_y + ")");
+
+                    //               Selection.Add((IDraggableShape) snapshot);
+                }
+            }
 //        remove(rectangle);
-        canvas.repaint();
+            canvas.repaint();
+        }
     }
-
 }
