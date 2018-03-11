@@ -1,6 +1,5 @@
 package controller;
 
-import model.ShapeColor;
 
 import java.awt.*;
 

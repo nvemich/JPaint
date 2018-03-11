@@ -21,25 +21,17 @@ public class mouseHandler extends MouseAdapter implements MouseListener {
 
     int start_x, start_y, end_x, end_y;
     PaintCanvas paint;
-    DrawShape shape;
     ApplicationState state;
-    ProcessPaint start;
     ShapeList shapeList;
-    ColorAdapater primary, secondary;
     ColorList colorList;
     IMODE mode;
-    Shape shapeObj;
     CommandHistory commands;
-    SelectedShapes selected;
     Clipboard clipboard;
-    ICommand cmd;
 
-
-    public mouseHandler(PaintCanvas paint, ShapeList list, SelectedShapes selected) {
+    public mouseHandler(PaintCanvas paint, ShapeList list) {
         this.paint = paint;
         this.shapeList = list;
         clipboard = new Clipboard();
-        this.selected = selected;
     }
 
 
@@ -63,14 +55,14 @@ public class mouseHandler extends MouseAdapter implements MouseListener {
                 if ((shape.getStartX() <= end_x) && (shape.getEndX() >= end_x) && (shape.getStartY() <= end_y) && (shape.getEndY() >= end_y)) {
                     {
                         System.out.println("Selected Shape: " + shape.getShape().toString());
-                        selected.push(shape);
+                        SelectedShapes.add(shape);
                     }
                 }else
-                    selected.clear();
+                    SelectedShapes.clear();
                 }else if((shape.getStartX() > start_x) && (shape.getStartY() > getStart_y()) // Checks the top left corner of the shape and the rectangle
                             && ((shape.getEndX() < e.getX()) && ((shape.getEndY() < e.getY())))){
                     System.out.println("Selected Shape: " + shape.getShape().toString());
-                    selected.push(shape);
+                    SelectedShapes.add(shape);
                 }
             }
         }else {
@@ -79,7 +71,7 @@ public class mouseHandler extends MouseAdapter implements MouseListener {
                     mode = new DrawMode(paint, shapeList, colorList, state, start_x, start_y, end_x, end_y);
                     break;
                 case "MOVE":
-                    mode = new MoveCommand(selected, shapeList, paint, start_x,start_y,end_x,end_y);
+                    mode = new MoveCommand(shapeList, paint, start_x,start_y,end_x,end_y);
                     break;
             }
             mode.run();
@@ -91,10 +83,6 @@ public class mouseHandler extends MouseAdapter implements MouseListener {
         this.commands = commands;
         this.colorList = list;
         this.state = state;
-    }
-
-    public SelectedShapes getSelectedList(){
-        return selected;
     }
 
     public Clipboard getClipboard(){

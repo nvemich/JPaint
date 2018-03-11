@@ -12,18 +12,15 @@ public class DeleteCommand implements ICommand, IUndoable {
     PaintCanvas canvas;
     ShapeList shapeList;
     SelectedShapes selectedShapes;
-    DrawShape draw;
-    ColorList colorList;
     OutlineAndFilledIn outfilled;
     FilledInShape filled;
     OutlineShape outline;
     Graphics2D graphics;
     ArrayList<Shape> tempRemoved = new ArrayList<>();
 
-    public DeleteCommand(PaintCanvas canvas, ShapeList shapeList, SelectedShapes selectedShapes) {
+    public DeleteCommand(PaintCanvas canvas, ShapeList shapeList) {
         this.canvas = canvas;
         this.shapeList = shapeList;
-        this.selectedShapes = selectedShapes;
         graphics = canvas.getGraphics2D();
     }
 
@@ -31,12 +28,12 @@ public class DeleteCommand implements ICommand, IUndoable {
     public void run() {
         if (!selectedShapes.isEmpty()) {
             CommandHistory.add(this);
-            for (Shape selected : selectedShapes) {
-                System.out.println("Selected Shape: " + selected.getShape());
+            for(int i =0; i < SelectedShapes.getSize(); i++){
+                System.out.println("Selected Shape: " + SelectedShapes.getShape(i));
                 for (Shape shapes : shapeList) {
                     System.out.println("ShapeList: " + shapes.getShape());
-                    if (selected.getShape().equals(shapes.getShape()) && (selected.getStartX() == shapes.getStartX()) &&
-                            (selected.getStartY() == shapes.getStartY())) {
+                    if (SelectedShapes.getShape(i).equals(shapes.getShape()) && (SelectedShapes.getShape(i).getStartX() == shapes.getStartX()) &&
+                            (SelectedShapes.getShape(i).getStartY() == shapes.getStartY())) {
                         shapeList.remove(shapes);
                         tempRemoved.add(shapes);
                         break;

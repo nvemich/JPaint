@@ -22,16 +22,12 @@ public class Main {
         ShapeList shapes = new ShapeList();
         CommandHistory cmds = new CommandHistory();
         ColorList colorList = new ColorList();
-        SelectedShapes selected = new SelectedShapes();
+ //       SelectedShapes selected = new SelectedShapes();
         PaintCanvas paintCanvas = new PaintCanvas();
-        mouseHandler mouse = new mouseHandler(paintCanvas, shapes,selected);
+        mouseHandler mouse = new mouseHandler(paintCanvas, shapes);
         paintCanvas.addMouseListener(mouse);
         IGuiWindow uiWindow = new GuiWindow(paintCanvas);
         IUiModule uiModule = new Gui(uiWindow);
-
-
- //       IGuiWindow guiWindow = new GuiWindow(new PaintCanvas(),shapes);
-
         ApplicationState appState = new ApplicationState(uiModule);
         IJPaintController controller = new JPaintController(uiModule, appState,mouse);
         controller.setup();

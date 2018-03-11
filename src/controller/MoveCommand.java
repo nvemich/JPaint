@@ -7,9 +7,9 @@ import view.gui.PaintCanvas;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MoveCommand implements IMODE, IUndoable {
-    SelectedShapes selectedShapes;
     PaintCanvas paintCanvas;
     ShapeList shapeList;
     int new_x,new_y, new_end_x, new_end_y;
@@ -19,10 +19,10 @@ public class MoveCommand implements IMODE, IUndoable {
     OutlineAndFilledIn outfilled;
     ArrayList<Shape> tempNew = new ArrayList<>();
     ArrayList<Shape> tempRemoved = new ArrayList<>();
+    Shape selectedShape;
 
 
-    public MoveCommand(SelectedShapes selectedShapes, ShapeList shapeList, PaintCanvas paintCanvas, int new_x, int new_y, int end_x, int end_y){
-        this.selectedShapes = selectedShapes;
+    public MoveCommand(ShapeList shapeList, PaintCanvas paintCanvas, int new_x, int new_y, int end_x, int end_y){
         this.shapeList = shapeList;
         this.paintCanvas = paintCanvas;
         this.new_x = new_x;
@@ -40,11 +40,13 @@ public class MoveCommand implements IMODE, IUndoable {
         int dy = new_end_y - new_y;
 
 
-        if (!selectedShapes.isEmpty()) {
-            for (Shape selected : selectedShapes) {
+        if (!SelectedShapes.isEmpty()) {
+            for(int i = 0; i < SelectedShapes.getSize(); i++)
+            {
+                selectedShape = SelectedShapes.getShape(i);
                 for (Shape list : shapeList) {
-                    if (selected.getShape().equals(list.getShape()) && (selected.getStartX() == list.getStartX()) &&
-                            (selected.getStartY() == list.getStartY())) {
+                    if (selectedShape.getShape().equals(list.getShape()) && (selectedShape.getStartX() == list.getStartX()) &&
+                            (selectedShape.getStartY() == list.getStartY())) {
                         Shape newShape = new Shape(list.getShape(), list.getStartX() + dx, (list.getStartY() + dy), (list.getEndX() + dx),
                                 (list.getEndY() + dy), list.getPColor(), list.getSColor(), list.getShade());
                         shapeList.add(newShape);
@@ -52,8 +54,8 @@ public class MoveCommand implements IMODE, IUndoable {
                         break;
                     }
             }
-                shapeList.remove(selected);
-                tempRemoved.add(selected);
+                shapeList.remove(selectedShape);
+                tempRemoved.add(selectedShape);
             }
 
             graphics.clearRect(0, 0, paintCanvas.getWidth(), paintCanvas.getHeight());
