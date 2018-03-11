@@ -29,7 +29,7 @@ public class PasteCommand implements ICommand, IUndoable{
 
     @Override
     public void run(){
-
+        CommandHistory.add(this);
 
         graphics = paint.getGraphics2D();
         for(Shape shape: clipboard){
@@ -54,15 +54,45 @@ public class PasteCommand implements ICommand, IUndoable{
 
     @Override
     public void undo() {
-        //delete shape
+        shapelist.remove(newShape);
+        graphics.clearRect(0, 0, paint.getWidth(), paint.getHeight());
+        for(Shape shape: shapelist){
+            System.out.println("New ShapeList: " + shape.getShape());
+            if(shape.getShade().toString().equalsIgnoreCase("outline")){
+                outline = new OutlineShape(paint,shape.getShape(),shape.getPColor(),shape.getStartX(),shape.getStartY(),shape.getEndX(),shape.getEndY());
+                outline.drawShape();
+            }else if(shape.getShade().toString().equalsIgnoreCase("FILLED_IN")){
+                filled = new FilledInShape(paint,shape.getShape(),shape.getPColor(),shape.getStartX(),shape.getStartY(),shape.getEndX(),shape.getEndY());
+                filled.drawShape();
+            }else if(shape.getShade().toString().equalsIgnoreCase("OUTLINE_AND_FILLED_IN")) {
+                outfilled = new OutlineAndFilledIn(paint,shape.getShape(),shape.getPColor(),shape.getSColor(),shape.getStartX(),
+                        shape.getStartY(),shape.getEndX(),shape.getEndY());
+                outfilled.drawShape();
+            }
+        }
+
     }
 
     @Override
     public void redo() {
+        for(Shape shape: clipboard){
+            newShape = new Shape(shape.getShape(),shape.getStartX(),shape.getStartY(),shape.getEndX(),shape.getEndY(),
+                    shape.getPColor(),shape.getSColor(),shape.getShade());
+            new_x = (shape.getEndX()-shape.getStartX()) ;
+            new_y = (shape.getEndY()-shape.getStartY());
 
+            if(shape.getShade().toString().equalsIgnoreCase("outline")){
+                outline = new OutlineShape(paint,shape.getShape(),shape.getPColor(),0,0,new_x,new_y);
+                outline.drawShape();
+            }else if(shape.getShade().toString().equalsIgnoreCase("FILLED_IN")){
+                filled = new FilledInShape(paint,shape.getShape(),shape.getPColor(),0,0,new_x,new_y);
+                filled.drawShape();
+            }else if(shape.getShade().toString().equalsIgnoreCase("OUTLINE_AND_FILLED_IN")) {
+                outfilled = new OutlineAndFilledIn(paint,shape.getShape(),shape.getPColor(),shape.getSColor(),0,0,new_x,new_y);
+                outfilled.drawShape();
+            }
+            shapelist.push(newShape);
+        }
     }
 
-    public Clipboard getList() {
-        return clipboard;
-    }
 }

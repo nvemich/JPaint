@@ -6,8 +6,9 @@ import model.interfaces.IShape;
 import view.gui.PaintCanvas;
 
 import java.awt.*;
+import java.util.ArrayList;
 
-public class MoveCommand implements IMODE {
+public class MoveCommand implements IMODE, IUndoable {
     SelectedShapes selectedShapes;
     PaintCanvas paintCanvas;
     ShapeList shapeList;
@@ -16,6 +17,9 @@ public class MoveCommand implements IMODE {
     OutlineShape outline;
     FilledInShape filled;
     OutlineAndFilledIn outfilled;
+    ArrayList<Shape> tempNew = new ArrayList<>();
+    ArrayList<Shape> tempRemoved = new ArrayList<>();
+
 
     public MoveCommand(SelectedShapes selectedShapes, ShapeList shapeList, PaintCanvas paintCanvas, int new_x, int new_y, int end_x, int end_y){
         this.selectedShapes = selectedShapes;
@@ -30,27 +34,28 @@ public class MoveCommand implements IMODE {
 
     @Override
     public void run() {
+        CommandHistory.add(this);
 
-        // find the offsets of the mouse drag
         int dx = new_end_x - new_x;
         int dy = new_end_y - new_y;
 
-        // for each selected shape, move it by the offsets by creating a new shape with those offsets
+
         if (!selectedShapes.isEmpty()) {
             for (Shape selected : selectedShapes) {
                 for (Shape list : shapeList) {
                     if (selected.getShape().equals(list.getShape()) && (selected.getStartX() == list.getStartX()) &&
-                            (selected.getStartY() == list.getStartY())) {                                   // if shape has been selected matches shapelist
+                            (selected.getStartY() == list.getStartY())) {
                         Shape newShape = new Shape(list.getShape(), list.getStartX() + dx, (list.getStartY() + dy), (list.getEndX() + dx),
                                 (list.getEndY() + dy), list.getPColor(), list.getSColor(), list.getShade());
                         shapeList.add(newShape);
+                        tempNew.add(newShape);
                         break;
                     }
-                }
+            }
                 shapeList.remove(selected);
+                tempRemoved.add(selected);
             }
 
-            selectedShapes.clear();
             graphics.clearRect(0, 0, paintCanvas.getWidth(), paintCanvas.getHeight());
             reDrawShapes();
         }
@@ -58,7 +63,6 @@ public class MoveCommand implements IMODE {
 
 
     public void reDrawShapes(){
-        System.out.println("ReDrawing Shapes");
         for(Shape shape: shapeList){
             System.out.println("New ShapeList: " + shape.getShape());
             if(shape.getShade().toString().equalsIgnoreCase("outline")){
@@ -73,5 +77,32 @@ public class MoveCommand implements IMODE {
                 outfilled.drawShape();
             }
         }
+    }
+
+    @Override
+    public void undo() {
+        graphics.clearRect(0, 0, paintCanvas.getWidth(), paintCanvas.getHeight());
+        for(Shape added: tempNew){
+            shapeList.remove(added);
+        }
+        for(Shape removed: tempRemoved) {
+            shapeList.add(removed);
+        }
+        reDrawShapes();
+
+    }
+
+    @Override
+    public void redo() {
+
+        graphics.clearRect(0, 0, paintCanvas.getWidth(), paintCanvas.getHeight());
+        for(Shape added: tempNew){
+            shapeList.add(added);
+        }
+        for(Shape removed: tempRemoved) {
+            shapeList.remove(removed);
+        }
+        reDrawShapes();
+
     }
 }

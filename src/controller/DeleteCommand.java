@@ -6,6 +6,7 @@ import view.gui.PaintCanvas;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class DeleteCommand implements ICommand, IUndoable {
     PaintCanvas canvas;
@@ -17,6 +18,7 @@ public class DeleteCommand implements ICommand, IUndoable {
     FilledInShape filled;
     OutlineShape outline;
     Graphics2D graphics;
+    ArrayList<Shape> tempRemoved = new ArrayList<>();
 
     public DeleteCommand(PaintCanvas canvas, ShapeList shapeList, SelectedShapes selectedShapes) {
         this.canvas = canvas;
@@ -27,8 +29,8 @@ public class DeleteCommand implements ICommand, IUndoable {
 
     @Override
     public void run() {
-
         if (!selectedShapes.isEmpty()) {
+            CommandHistory.add(this);
             for (Shape selected : selectedShapes) {
                 System.out.println("Selected Shape: " + selected.getShape());
                 for (Shape shapes : shapeList) {
@@ -36,11 +38,12 @@ public class DeleteCommand implements ICommand, IUndoable {
                     if (selected.getShape().equals(shapes.getShape()) && (selected.getStartX() == shapes.getStartX()) &&
                             (selected.getStartY() == shapes.getStartY())) {
                         shapeList.remove(shapes);
+                        tempRemoved.add(shapes);
                         break;
                     }
                 }
             }
-        selectedShapes.clear();
+
         graphics.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         reDrawShapes();
     }
@@ -66,11 +69,19 @@ public class DeleteCommand implements ICommand, IUndoable {
 
     @Override
     public void undo() {
-
+        graphics.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        for(Shape deleted: tempRemoved) {
+            shapeList.add(deleted);
+        }
+        reDrawShapes();
     }
 
     @Override
     public void redo() {
-
+        graphics.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        for(Shape deleted: tempRemoved) {
+            shapeList.remove(deleted);
+        }
+        reDrawShapes();
     }
 }

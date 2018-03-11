@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 
-public class Clipboard extends ArrayList<Shape> implements ICommand{
+public class Clipboard extends ArrayList<Shape>{
     private ArrayList<Shape> shapes;
 
     public void push(Shape t) {
@@ -19,11 +19,6 @@ public class Clipboard extends ArrayList<Shape> implements ICommand{
         public Shape pop(){
         if (this.isEmpty()) throw new EmptyStackException();
         return this.remove(this.size()-1);
-    }
-
-    @Override
-    public void run() throws IOException {
-        shapes.toString();
     }
 
 
