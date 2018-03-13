@@ -22,7 +22,6 @@ public class Main {
         ShapeList shapes = new ShapeList();
         CommandHistory cmds = new CommandHistory();
         ColorList colorList = new ColorList();
- //       SelectedShapes selected = new SelectedShapes();
         PaintCanvas paintCanvas = new PaintCanvas();
         mouseHandler mouse = new mouseHandler(paintCanvas, shapes);
         paintCanvas.addMouseListener(mouse);

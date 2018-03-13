@@ -92,6 +92,8 @@ public class MoveCommand implements IMODE, IUndoable {
         }
         reDrawShapes();
 
+
+
     }
 
     @Override
